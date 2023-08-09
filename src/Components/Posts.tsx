@@ -210,13 +210,15 @@ export const PostComponent: React.FC<PostProps> = ({
                         Edit
                       </Button>
                     ))}
-                  <Button
-                    className="delete-comment-button"
-                    variant="danger"
-                    onClick={() => handleDeleteComment(c.postId, index)}
-                  >
-                    Delete
-                  </Button>
+                  {currentUserEmail == c.email && (
+                    <Button
+                      className="delete-comment-button"
+                      variant="danger"
+                      onClick={() => handleDeleteComment(c.postId, index)}
+                    >
+                      Delete
+                    </Button>
+                  )}
                 </div>
               </div>
             ))}

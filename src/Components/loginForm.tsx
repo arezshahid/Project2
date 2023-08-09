@@ -3,6 +3,7 @@ import { Button } from "react-bootstrap";
 import { loginValidation } from "../Utils/Validation/loginValidation";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useNavigate } from "react-router-dom";
+import { constants } from "../Utils/Constants/constants";
 
 export const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -23,7 +24,7 @@ export const LoginForm: React.FC = () => {
         );
         if (userIndex > -1) {
           console.log("Logged in with:", values.email, values.password);
-          navigate("/home", { state: Users[userIndex] });
+          navigate(constants.home, { state: Users[userIndex] });
         } else {
           alert("Invalid Credentials");
         }
