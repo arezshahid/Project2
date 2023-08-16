@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { GetPosts, AddPost } from "../Services/Posts/posts";
 import { PostComponent } from "../Components/Posts";
 import { NavBar } from "../Components/navbar";
+import { constants } from "../Utils/Constants/constants";
 
 interface Post {
   userId: string;
@@ -13,12 +14,16 @@ interface Post {
 
 export const HomePage: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const data = location.state;
 
   const [posts, setPosts] = useState<Post[]>([]);
   const [currentPostId, setCurrentPostId] = useState();
 
   useEffect(() => {
+    if (data == null) {
+      navigate(constants.auth);
+    }
     const fetchPosts = async () => {
       try {
         const fetchedPosts: any = await GetPosts();
@@ -33,27 +38,29 @@ export const HomePage: React.FC = () => {
   }, []);
 
   return (
-    <div className="postsContainer">
-      <NavBar />
-      <AddPost
-        currentUser={data.id}
-        Id={currentPostId}
-        setPostState={setPosts}
-      />
-      {posts?.map((post: any) => (
-        <PostComponent
-          key={post.id}
-          id={post.id}
-          userId={post.userId}
-          title={post.title}
-          body={post.body}
-          currentUser={data.id}
-          Comment={post?.comments}
-          currentUserName={data.name}
-          currentUserEmail={data.email}
+    data && (
+      <div className="postsContainer">
+        <NavBar />
+        <AddPost
+          currentUser={data?.id}
+          Id={currentPostId}
           setPostState={setPosts}
         />
-      ))}
-    </div>
+        {posts?.map((post: any) => (
+          <PostComponent
+            key={post?.id}
+            id={post?.id}
+            userId={post?.userId}
+            title={post?.title}
+            body={post?.body}
+            currentUser={data?.id}
+            Comment={post?.comments}
+            currentUserName={data?.name}
+            currentUserEmail={data?.email}
+            setPostState={setPosts}
+          />
+        ))}
+      </div>
+    )
   );
 };

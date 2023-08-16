@@ -32,6 +32,7 @@ export const RegisterForm: React.FC = () => {
           } else {
             Users.push(user);
             localStorage.setItem("Users", JSON.stringify(Users));
+            alert("User Registered");
             console.log(Users);
           }
         }

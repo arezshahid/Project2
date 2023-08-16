@@ -4,7 +4,7 @@ import { deletePost, editPost } from "../Services/Posts/posts";
 import {
   addComment,
   deleteComment,
-  saveComment,
+  editComment,
 } from "../Services/Comments/comments";
 import { v4 as uuidv4 } from "uuid";
 
@@ -93,11 +93,11 @@ export const PostComponent: React.FC<PostProps> = ({
     setEditingCommentIndex(index);
   };
 
-  const handleSaveComment = (postId: any, index: any) => {
+  const handleUpdateComment = (postId: any, index: any) => {
     setIsCommentEditing(!isCommentEditing);
     setIsCommentButtonEditing(!isCommentButtonEditing);
     setEditingCommentIndex(-1);
-    saveComment(postId, index, comments);
+    editComment(postId, index, comments);
   };
 
   const handleEditComment = (
@@ -197,7 +197,7 @@ export const PostComponent: React.FC<PostProps> = ({
                       <Button
                         className="save-comment-button"
                         variant="success"
-                        onClick={() => handleSaveComment(c.postId, index)}
+                        onClick={() => handleUpdateComment(c.postId, index)}
                       >
                         Save
                       </Button>

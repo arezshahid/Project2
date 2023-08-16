@@ -29,7 +29,7 @@ export async function addComment(
   }
 }
 
-export async function saveComment(postId: any, index: any, comments: any) {
+export async function editComment(postId: any, index: any, comments: any) {
   const Posts: any = await GetPosts();
   const postToEdit = Posts.find((p: any) => p.id === postId);
   if (postToEdit) {

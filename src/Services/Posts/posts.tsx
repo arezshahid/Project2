@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { GetComments } from "../Comments/comments";
+import { AddPostModal } from "../../Components/AddPostModal";
 
 export async function GetPosts() {
   let Posts = JSON.parse(localStorage.getItem("Posts")!);
@@ -35,7 +36,7 @@ export const AddPost: React.FC<{
   let Posts = JSON.parse(localStorage.getItem("Posts")!);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  const [isShow, invokeModal] = useState(false);
+  const [isShow, setIsShow] = useState(false);
 
   const storePost = (currentUser: any, Id: any, title: any, body: any) => {
     Posts.unshift({
@@ -47,56 +48,23 @@ export const AddPost: React.FC<{
     });
     setPostState(Posts);
     localStorage.setItem("Posts", JSON.stringify(Posts));
-    initModal();
+    initAddPostModal();
   };
 
-  const initModal = () => {
-    console.log(isShow);
-    return invokeModal(!isShow);
+  const initAddPostModal = () => {
+    setIsShow(!isShow);
   };
-  return (
-    <>
-      <Button className="mt-4" variant="success" onClick={initModal}>
-        Add Post
-      </Button>
-      <Modal show={isShow}>
-        <Modal.Header closeButton onClick={initModal}>
-          <Modal.Title className="text-center">{Id}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="post">
-            <div className="post-card">
-              <label>Title</label>
-              <input
-                className="post-title"
-                onChange={(value) => {
-                  setTitle(value.target.value);
-                }}
-              ></input>
-              <label>Body</label>
-              <input
-                className="post-body"
-                onChange={(value) => {
-                  setBody(value.target.value);
-                }}
-              ></input>
-            </div>
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="danger" onClick={initModal}>
-            Close
-          </Button>
-          <Button
-            variant="dark"
-            onClick={() => storePost(currentUser, Id, title, body)}
-          >
-            Store
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
-  );
+  return AddPostModal({
+    initAddPostModal: initAddPostModal,
+    isShow: isShow,
+    Id: Id,
+    setTitle: setTitle,
+    setBody: setBody,
+    storePost: storePost,
+    currentUser: currentUser,
+    title: title,
+    body: body,
+  });
 };
 
 export function editPost(id: any, editedBody: any, setPostState: any) {
